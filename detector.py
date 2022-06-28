@@ -28,6 +28,7 @@ import argparse
 import sys
 
 #to run use:
+
 #python3 detector.py v4l2:///dev/video0
 
 # parse the command line
@@ -76,7 +77,7 @@ while True:
 	class_desc = net.GetClassDesc(class_id)
 
 	# overlay the result on the image	
-	#font.OverlayText(img, img.width, img.height, "{:05.2f}% {:s}".format(confidence * 100, class_desc), 5, 5, font.White, font.Gray40)
+	# font.OverlayText(img, img.width, img.height, "{:05.2f}% {:s}".format(confidence * 100, class_desc), 5, 5, font.White, font.Gray40)
 	
 	# render the image
 	output.Render(img)
@@ -95,14 +96,16 @@ while True:
 
 	count = 0
 
-
+	#take a picture if the image has something that a person would wear
 	if ("mask" in class_desc or "hood" in class_desc or "wig" in class_desc or "glases" in class_desc or "hat" in class_desc or "head" in class_desc or "cap" in class_desc or "T-shirt" in class_desc or "jacket" in class_desc or "pants" in class_desc or "sweat" in class_desc or "jean" in class_desc or "hair" in class_desc) and first == 1:
 		first = 0
 		jetson.utils.saveImageRGBA('generalImage.jpg',img,img.width,img.height)	
 
+	#take a picture if the image has something that a person would wear on their head
 	if "mask" in class_desc or "wig" in class_desc or "sunglas" in class_desc or "hat" in class_desc or "head" in class_desc or "cap" in class_desc or "hood" in class_desc:
 		second = 0
 		jetson.utils.saveImageRGBA('faceImage.jpg',img,img.width,img.height)
-
+	
+	#stop after bouth images taken
 	if first == 0 and second == 0:
 		break
